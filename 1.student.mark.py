@@ -1,8 +1,28 @@
 def input_students():
-    return int(input("Enter the number of students in this class: "))
+    num_students = input("Enter the number of students in this class: ")
+    if num_students.isnumeric()==False:
+        print("The number of students must be a positive number")
+        return 0
+    else:
+        num_students = int(num_students)
+        if num_students > 0:
+            return num_students
+        else:
+            print("The number of students must be a positive number")
+            return 0
 
 def input_course():
-    return int(input("Enter the number of courses in this class: "))
+    num_courses = input("Enter the number of courses in this class: ")
+    if num_courses.isnumeric()==False:
+        print("The number of courses must be a positive number")
+        return 0
+    else:
+        num_courses = int(num_courses)
+        if num_courses > 0:
+            return num_courses
+        else:
+            print("The number of courses must be a positive number")
+            return 0
 
 def input_student_infos(num_students):
     students = {}
@@ -28,7 +48,7 @@ def input_course_infos(num_courses):
 def input_mark(students, courses):
     course_id = input("Enter course id: ")
     if course_id not in courses:
-        print("Id not found")
+        print("Id is not found")
         return None, None
 
     marks = {}
@@ -38,31 +58,33 @@ def input_mark(students, courses):
 
     return course_id, marks
 
-def list_students(students, marks):
-
+def list_students(students, all_marks):
+   print("Students' information")
    for id, info in students.items():
     print(f"""_________________________________________________________________
 ID: {id}
 Name: {info["name"]}
 Date of birth: {info["dob"]}""")
+    for course_id, marks in all_marks.items():
+        if id in marks:
+            print(f"Mark for course {course_id} is {marks[id]}")
 
 def list_courses(courses):
-    # TODO: check what happens if there's no course (hint: len(course))
-    print("There aren't any courses yet")
-        
-    print("Here is the course list: ")
-    # TODO: add loop function to check the info of course
-    print(f"{i+1}. {course['id']} - {course['name']}")
-
+    print("Courses' information")
+    for id, info in courses.items():
+        print(f"""_________________________________________________________________
+ID: {id}
+Name: {info["name"]}""")
 def main():
     courses = {}
     students = {}
-    marks = {}
+    all_marks = {}
     num_students = 0
     num_courses = 0
 
     while(True):
-        print("""_________________________________________________________________
+        print("""
+_________________________________________________________________
 1. Input number of students
 2. Input number of courses
 3. Input students' information
@@ -83,16 +105,34 @@ _________________________________________________________________
         elif option == '2':                                                                                                                               
             num_courses = input_course()
         elif option == '3':
-            students = input_student_infos(num_students)
+            if num_students > 0:
+                students = input_student_infos(num_students)
+            else:
+                print("You must input number of students first")
         elif option == '4':
-            courses = input_course_infos(num_courses)
+            if num_courses > 0:
+                courses = input_course_infos(num_courses)
+            else:
+                print("You must input number of courses first")
         elif option == '5':
-            course_id, marks = input_mark(students, courses)
+            if students and courses:
+                course_id, marks = input_mark(students, courses)
+                all_marks[course_id] = marks
+            else:
+                print("You must input both students and courses infomation first")
         elif option == '6':
-            list_students(students, marks)
+            if students:
+                list_students(students, all_marks)
+            else:
+                print("You must input students infomation first")
+        elif option == '7':
+            if courses:
+                list_courses(courses)
+            else:
+                print("You must input courses infomation first")
                
         else:
-            print("Invalid input. Please try again!")
+            print("Please try again!")
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
