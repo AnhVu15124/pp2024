@@ -1,3 +1,4 @@
+import curses
 import math
 import numpy as np
 
@@ -7,9 +8,9 @@ class Student:
         self.name = name
         self.dob = dob
 
-    def display_info(self):
-        print("_________________________________________________________________")
-        print(f"ID: {self.id}\nName: {self.name}\nDate of birth: {self.dob}")
+    def display_info(self, stdscr):
+        stdscr.addstr("_________________________________________________________________\n")
+        stdscr.addstr(f"ID: {self.id}\nName: {self.name}\nDate of birth: {self.dob}\n")
 
 class Course:
     def __init__(self, id, name, credit):
@@ -17,86 +18,113 @@ class Course:
         self.name = name
         self.credit = credit
 
-    def display_info(self):
-        print("_________________________________________________________________")
-        print(f"ID: {self.id}\nName: {self.name}\nCredit: {self.credit}")
+    def display_info(self, stdscr):
+        stdscr.addstr("_________________________________________________________________\n")
+        stdscr.addstr(f"ID: {self.id}\nName: {self.name}\nCredit: {self.credit}\n")
 
 
 class All_marks:
     def __init__(self):
         self.course = None
         self.marks = {}
-    def input_mark(self, students):
-        for student in students:
-            mark = input(f"Enter mark for student {student.id}: ")
-            mark = float(mark)
-            mark = math.floor(mark*10) / 10
-            self.marks[student.id] = mark
-            
 
-def input_students():
-    num_students = input("Enter the number of students in this class: ")
+    def input_mark(self, students, stdscr):
+        for student in students:
+            stdscr.addstr(f"Enter mark for student {student.id}: ")
+            stdscr.refresh()
+            mark = stdscr.getstr(0, 0, 5).decode()
+            mark = float(mark)
+            mark = math.floor(mark * 10) / 10
+            self.marks[student.id] = mark
+
+
+def input_students(stdscr):
+    stdscr.addstr("Enter the number of students in this class: ")
+    stdscr.refresh()
+    num_students = stdscr.getstr(0, 0, 5).decode()
     if not num_students.isnumeric():
-        print("The number of students must be a positive number")
+        stdscr.addstr("The number of students must be a positive number\n")
+        stdscr.refresh()
+        stdscr.getch()
         return 0
     else:
         num_students = int(num_students)
         if num_students > 0:
             return num_students
         else:
-            print("The number of students must be a positive number")
+            stdscr.addstr("The number of students must be a positive number\n")
+            stdscr.refresh()
+            stdscr.getch()
             return 0
 
-def input_courses():
-    num_courses = input("Enter the number of courses in this class: ")
-    if num_courses.isnumeric()==False:
-        print("The number of courses must be a positive number")
+def input_courses(stdscr):
+    stdscr.addstr("Enter the number of courses in this class: ")
+    stdscr.refresh()
+    num_courses = stdscr.getstr(0, 0, 5).decode()
+    if not num_courses.isnumeric():
+        stdscr.addstr("The number of courses must be a positive number\n")
+        stdscr.refresh()
+        stdscr.getch()
         return 0
     else:
         num_courses = int(num_courses)
         if num_courses > 0:
             return num_courses
         else:
-            print("The number of courses must be a positive number")
+            stdscr.addstr("The number of courses must be a positive number\n")
+            stdscr.refresh()
+            stdscr.getch()
             return 0
 
         
-def input_student_infos(num_students):
+def input_student_infos(stdscr, num_students):
     students = []
     for i in range(num_students):
-            print("_________________________________________________________________")
-            id = input(f"Enter student {i+1} id: ")
-            name = input(f"Enter student {i+1} name: ")
-            dob = input(f"Enter student {i+1} date of birth(dd/mm/yyyy): ")
-            students.append(Student(id, name, dob))     
+        stdscr.addstr("_________________________________________________________________\n")
+        stdscr.addstr(f"Enter student {i+1} id: ")
+        stdscr.refresh()
+        id = stdscr.getstr(0, 0, 50).decode()
+        stdscr.addstr(f"Enter student {i+1} name: ")
+        stdscr.refresh()
+        name = stdscr.getstr(0, 0, 50).decode()
+        stdscr.addstr(f"Enter student {i+1} date of birth (dd/mm/yyyy): ")
+        stdscr.refresh()
+        dob = stdscr.getstr(0, 0, 50).decode()
+        students.append(Student(id, name, dob))
     return students
 
 
-def input_course_infos(num_courses):
+def input_course_infos(stdscr, num_courses):
     courses = []
     for i in range(num_courses):
-            print("_________________________________________________________________")
-            id = input(f"Enter course {i+1} id: ")
-            name = input(f"Enter course {i+1} name: ")
-            credit = int(input(f"Enter course {i+1} credit: "))
-            courses.append(Course(id, name, credit))     
+        stdscr.addstr("_________________________________________________________________\n")
+        stdscr.addstr(f"Enter course {i+1} id: ")
+        stdscr.refresh()
+        id = stdscr.getstr(0, 0, 50).decode()
+        stdscr.addstr(f"Enter course {i+1} name: ")
+        stdscr.refresh()
+        name = stdscr.getstr(0, 0, 50).decode()
+        stdscr.addstr(f"Enter course {i+1} credit: ")
+        stdscr.refresh()
+        credit = int(stdscr.getstr(0, 0, 50).decode())
+        courses.append(Course(id, name, credit))
     return courses
 
 
-def input_marks(course, students):
+def input_marks(course, students, stdscr):
     all_mark = All_marks()
     all_mark.course = course
-    all_mark.input_mark(students)
+    all_mark.input_mark(students, stdscr)
     return all_mark
 
 
-def list_students(students, all_marks):
-    print("Students' information")
+def list_students(students, all_marks, stdscr):
+    stdscr.addstr("Students' information\n")
     for student in students:
-        student.display_info()
+        student.display_info(stdscr)
         for all_mark in all_marks:
             if student.id in all_mark.marks:
-                print(f"Mark for course {all_mark.course.id} is {all_mark.marks[student.id]}")
+                stdscr.addstr(f"Mark for course {all_mark.course.id} is {all_mark.marks[student.id]}\n")
 
 def gpa(students, all_marks, courses):
     student_gpas = []
@@ -113,22 +141,21 @@ def gpa(students, all_marks, courses):
     return sorted_students
 
 
-def list_courses(courses):
-    print("Courses' information")
+def list_courses(courses, stdscr):
+    stdscr.addstr("Courses' information\n")
     for course in courses:
-        course.display_info()
+        course.display_info(stdscr)
 
-
-def main():
+def main(stdscr):
     courses = []
     students = []
     all_marks = []
     num_students = 0
     num_courses = 0
 
-
-    while (True):
-        print("""
+    while True:
+        stdscr.clear()
+        stdscr.addstr(0, 0, """
 __________________________________________________________________
 1. Input number of students
 2. Input number of courses
@@ -141,58 +168,74 @@ __________________________________________________________________
 0. Exit
 __________________________________________________________________
 """)
-        option = input("Your choice: ")
+        stdscr.refresh()
 
-        if option == '0':
-            print("Exiting...")
+        option = stdscr.getch()
+
+        if option == ord('0'):
+            stdscr.addstr(0, 0, "Exiting...")
+            stdscr.refresh()
+            curses.napms(1000)
             break
-        elif option == '1':
-            num_students = input_students()
-        elif option == '2':
-            num_courses = input_courses()
-        elif option == '3':
+        elif option == ord('1'):
+            num_students = input_students(stdscr)
+        elif option == ord('2'):
+            num_courses = input_courses(stdscr)
+        elif option == ord('3'):
             if num_students > 0:
-                students = input_student_infos(num_students)
+                students = input_student_infos(stdscr, num_students)
             else:
-                print("You must input number of students first")
-        elif option == '4':
+                stdscr.addstr(0, 0, "You must input number of students first.")
+                stdscr.getch()  
+        elif option == ord('4'):
             if num_courses > 0:
-                courses = input_course_infos(num_courses)
+                courses = input_course_infos(stdscr, num_courses)
             else:
-                print("You must input number of courses first")
-        elif option == '5':
+                stdscr.addstr(0, 0, "You must input number of courses first.")
+                stdscr.getch()  
+        elif option == ord('5'):
             if students and courses:
                 course_id = input("Enter course id: ")
                 course = next((c for c in courses if c.id == course_id), None)
                 if course:
-                    all_marks.append(input_marks(course, students))
+                    all_marks.append(input_marks(course, students, stdscr))
                 else:
-                    print("Id is not found")
+                    stdscr.addstr(0, 0, "Id is not found.")
+                    stdscr.getch()  
             else:
-                print("You must input both students and courses information first")
-        elif option == '6':
+                stdscr.addstr(0, 0, "You must input both students and courses information first.")
+                stdscr.getch()  
+        elif option == ord('6'):
             if students:
-                list_students(students, all_marks)
-                gpa(students,all_marks,courses)
+                list_students(students, all_marks, stdscr)
             else:
-                print("You must input both students information first")
-        elif option == '7':
+                stdscr.addstr(0, 0, "You must input students' information first.")
+                stdscr.getch()  
+        elif option == ord('7'):
             if courses:
-                list_courses(courses)
+                list_courses(courses, stdscr)
             else:
-                print("You must input courses information first")
-        elif option == '8':
+                stdscr.addstr(0, 0, "You must input courses' information first.")
+                stdscr.getch()  
+        elif option == ord('8'):
             if students:
                 sorted_students = gpa(students, all_marks, courses)
-                print("Students' information sorted by GPA:")
+                stdscr.addstr(0, 0, "Students' information sorted by GPA:")
+                stdscr.refresh()
+                stdscr.getch()  
                 for student, gpa_value in sorted_students:
-                    student.display_info()
-                    print(f"GPA: {gpa_value:.1f}")
+                    student.display_info(stdscr)
+                    stdscr.addstr(f"GPA: {gpa_value:.1f}")
+                    stdscr.refresh()
+                    stdscr.getch()  
             else:
-                print("You must input courses information first")
+                stdscr.addstr(0, 0, "You must input courses information first.")
+                stdscr.getch()  
         else:
-            print("Please try again!")
+            stdscr.addstr(0, 0, "Please try again!")
+            stdscr.getch()  
 
+    curses.endwin()
 
 if __name__ == "__main__":
-    main()
+    curses.wrapper(main)
