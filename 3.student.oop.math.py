@@ -195,7 +195,9 @@ __________________________________________________________________
                 stdscr.getch()  
         elif option == ord('5'):
             if students and courses:
-                course_id = input("Enter course id: ")
+                stdscr.addstr("Enter course id: ")
+                stdscr.refresh()
+                course_id = stdscr.getstr(0, 0, 50).decode()
                 course = next((c for c in courses if c.id == course_id), None)
                 if course:
                     all_marks.append(input_marks(course, students, stdscr))
