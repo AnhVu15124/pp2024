@@ -1,5 +1,6 @@
 import curses
 import zlib
+import pickle
 from input import *
 from output import *
 from domain import Student, Course, All_marks
@@ -19,8 +20,8 @@ def gpa(students, all_marks, courses):
     return sorted_students
 
 def compress_data(students, courses, all_marks):
-    data = f"{students}\n{courses}\n{all_marks}"
-    compress_data = zlib.compress(data.encode())
+    data = (students, courses, all_marks)
+    compress_data = zlib.compress(pickle.dunps(data))
     with open("students.dat","wb") as file:
         file.write(compress_data) 
 
@@ -28,9 +29,8 @@ def decompress_data():
     try:
         with open("students.dat","rb") as file:
             compress_data = file.read()
-        decompress_data = zlib.decompress(compress_data)
-        students, courses, all_marks = eval(decompress_data.decode())
-        return students, courses, all_marks
+        decompress_data = pickle.loads(zlib.decompress(compress_data))
+        return decompress_data
     except FileNotFoundError:
         return None, None, None
     except Exception as e:
