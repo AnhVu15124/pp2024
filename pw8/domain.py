@@ -32,7 +32,7 @@ class All_marks:
         for student in students:
             stdscr.addstr(f"Enter mark for student {student.id}: ")
             stdscr.refresh()
-            mark = stdscr.getstr(0, 0, 5).decode()
+            mark = stdscr.getstr().decode()
             mark = float(mark)
             mark = math.floor(mark * 10) / 10
             self.marks[student.id] = mark
