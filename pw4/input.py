@@ -5,7 +5,7 @@ from domain import Student, Course, All_marks
 def input_students(stdscr):
     stdscr.addstr("Enter the number of students in this class: ")
     stdscr.refresh()
-    num_students = stdscr.getstr(0, 0, 5).decode()
+    num_students = stdscr.getstr().decode()
     if not num_students.isnumeric():
         stdscr.addstr("The number of students must be a positive number\n")
         stdscr.refresh()
@@ -24,7 +24,7 @@ def input_students(stdscr):
 def input_courses(stdscr):
     stdscr.addstr("Enter the number of courses in this class: ")
     stdscr.refresh()
-    num_courses = stdscr.getstr(0, 0, 5).decode()
+    num_courses = stdscr.getstr().decode()
     if not num_courses.isnumeric():
         stdscr.addstr("The number of courses must be a positive number\n")
         stdscr.refresh()
@@ -47,13 +47,13 @@ def input_student_infos(stdscr, num_students):
         stdscr.addstr("_________________________________________________________________\n")
         stdscr.addstr(f"Enter student {i+1} id: ")
         stdscr.refresh()
-        id = stdscr.getstr(0, 0, 50).decode()
+        id = stdscr.getstr().decode()
         stdscr.addstr(f"Enter student {i+1} name: ")
         stdscr.refresh()
-        name = stdscr.getstr(0, 0, 50).decode()
+        name = stdscr.getstr().decode()
         stdscr.addstr(f"Enter student {i+1} date of birth (dd/mm/yyyy): ")
         stdscr.refresh()
-        dob = stdscr.getstr(0, 0, 50).decode()
+        dob = stdscr.getstr().decode()
         students.append(Student(id, name, dob))
     return students
 
@@ -64,13 +64,13 @@ def input_course_infos(stdscr, num_courses):
         stdscr.addstr("_________________________________________________________________\n")
         stdscr.addstr(f"Enter course {i+1} id: ")
         stdscr.refresh()
-        id = stdscr.getstr(0, 0, 50).decode()
+        id = stdscr.getstr().decode()
         stdscr.addstr(f"Enter course {i+1} name: ")
         stdscr.refresh()
-        name = stdscr.getstr(0, 0, 50).decode()
+        name = stdscr.getstr().decode()
         stdscr.addstr(f"Enter course {i+1} credit: ")
         stdscr.refresh()
-        credit = int(stdscr.getstr(0, 0, 50).decode())
+        credit = int(stdscr.getstr().decode())
         courses.append(Course(id, name, credit))
     return courses
 
