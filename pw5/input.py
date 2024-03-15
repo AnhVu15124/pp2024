@@ -91,14 +91,3 @@ def input_marks(course, students, stdscr):
             if student.id in all_mark.marks:
                 file.write(f"Student ID: {student.id}\nCourse ID: {course.id}\nMark: {all_mark.marks[student.id]}\n_________________________________________________________________\n")
     return all_mark
-
-def input_marks(course, students, stdscr):
-    all_mark = All_marks()
-    all_mark.course = course
-    all_mark.input_mark(students, stdscr)
-
-    with open("marks.txt", "a") as file:
-        for student in students:
-            if student.id in all_mark.marks:
-                file.write(f"Student ID: {student.id}\nCourse ID: {course.id}\nMark: {all_mark.marks[student.id]}\n_________________________________________________________________\n")
-    return all_mark

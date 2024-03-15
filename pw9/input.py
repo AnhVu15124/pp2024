@@ -43,7 +43,7 @@ def input_courses_info(window, num_courses):
             credit = tk.simpledialog.askstring(f"Course {i+1} credit",f"Enter course {i+1} credit:")
             course = Course(id, name, credit)
             courses.append(course)
-            file.write(f"ID: {course.id}\nName: {course.name}\nDate of birth: {course.credit}\n_________________________________________________________________\n")
+            file.write(f"ID: {course.id}\nName: {course.name}\nCredit: {course.credit}\n_________________________________________________________________\n")
     messagebox.showinfo("Success", "Courses' information has been entered successfully.")
     return courses
 
