@@ -6,20 +6,6 @@ from input import *
 from output import *
 from domain import Student, Course, All_marks
 
-def gpa(students, all_marks, courses):
-    student_gpas = []
-    for student in students:
-        marks = np.array([all_mark.marks[student.id] for all_mark in all_marks if student.id in all_mark.marks])
-        course_ids = [all_mark.course.id for all_mark in all_marks if student.id in all_mark.marks]
-        credits = np.array([course.credit for course in courses if course.id in course_ids])
-        total_grade_points = np.sum(marks * credits)
-        total_credits = np.sum(credits)
-        gpa = total_grade_points / total_credits
-        student_gpas.append((student, gpa))
-
-    sorted_students = sorted(student_gpas, key=lambda x: x[1], reverse=True)
-    return sorted_students
-
 def compress_data(students, courses, all_marks):
     def compress():
         data = (students, courses, all_marks)
