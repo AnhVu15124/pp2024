@@ -21,9 +21,9 @@ def list_courses(courses, window):
 def gpa(students, all_marks, courses):
     student_gpas = []
     for student in students:
-        marks = np.array([all_mark.marks[student.id] for all_mark in all_marks if student.id in all_mark.marks], dtype=np.float64)
+        marks = np.array([all_mark.marks[student.id] for all_mark in all_marks if student.id in all_mark.marks])
         course_ids = [all_mark.course.id for all_mark in all_marks if student.id in all_mark.marks]
-        credits = np.array([course.credit for course in courses if course.id in course_ids], dtype=np.float64)
+        credits = np.array([course.credit for course in courses if course.id in course_ids])
         total_point = np.sum(marks * credits)
         total_credits = np.sum(credits)
         gpa_value = total_point / total_credits

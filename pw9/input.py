@@ -40,7 +40,7 @@ def input_courses_info(window, num_courses):
         for i in range(num_courses):
             id = tk.simpledialog.askstring(f"Course {i+1} ID",f"Enter course {i+1} id:")
             name = tk.simpledialog.askstring(f"Course {i+1} name",f"Enter course {i+1} name:")
-            credit = tk.simpledialog.askstring(f"Course {i+1} credit",f"Enter course {i+1} credit:")
+            credit = tk.simpledialog.askinteger(f"Course {i+1} credit",f"Enter course {i+1} credit:")
             course = Course(id, name, credit)
             courses.append(course)
             file.write(f"ID: {course.id}\nName: {course.name}\nCredit: {course.credit}\n_________________________________________________________________\n")

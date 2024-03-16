@@ -11,6 +11,7 @@ class Student:
     def display_info(self, stdscr):
         stdscr.addstr("_________________________________________________________________\n")
         stdscr.addstr(f"ID: {self.id}\nName: {self.name}\nDate of birth: {self.dob}\n")
+        stdscr.refresh()
 
 class Course:
     def __init__(self, id, name, credit):

@@ -67,6 +67,7 @@ __________________________________________________________________
         elif option == ord('6'):
             if students:
                 list_students(students, all_marks, stdscr)
+                stdscr.refresh()
             else:
                 stdscr.addstr("You must input students' information first.")
                 stdscr.getch()  
